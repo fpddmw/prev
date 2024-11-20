@@ -346,12 +346,6 @@ class Exp_Forecast(Exp_Basic):
                     batch_y_mark_rev = torch.cat([batch_y_mark_rev for _ in range(len(param_dicts))])
                     print(f"batch_y_mark_rev shape:{batch_y_mark_rev.shape}")
                     
-                    ##生成测试数据##
-                    batch_x_pro = data_tuner.get_batches(batch_x)
-                    batch_x_pro = torch.cat([batch_x, batch_x_pro])
-                    print(f"batch_x_pro shape:{batch_x_pro.shape}")
-                    batch_x = batch_x_pro.float().to(self.device)
-
                     batch_x_rev_pro = data_tuner.get_batches(batch_x_rev)
                     batch_x_rev_pro = torch.cat([batch_x_rev, batch_x_rev_pro])
                     print(f"batch_x_rev_pro shape:{batch_x_rev_pro.shape}")
@@ -375,6 +369,12 @@ class Exp_Forecast(Exp_Basic):
                     best_idx_data = best_idx_param
                     print(f"best_idx:{best_idx_param},\
                            param_dict:{'none' if best_idx_param == 0 else param_dicts[best_idx_param - 1]}")
+
+                    ##生成测试数据##
+                    batch_x_pro = data_tuner.get_batches(batch_x)
+                    batch_x_pro = torch.cat([batch_x, batch_x_pro])
+                    print(f"batch_x_pro shape:{batch_x_pro.shape}")
+                    batch_x = batch_x_pro.float().to(self.device)
 
                     ##预测正向##
                     pred, true = self._pred(test_data, data_tuner,\
